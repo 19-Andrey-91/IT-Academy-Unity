@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class Scaler : MonoBehaviour
 {
-    [SerializeField] private float _timeScale = 3;
+    [SerializeField] private float _timeBetweenScale = 3;
+    [SerializeField] private float _speedScale = 1;
 
     [Header("X-scale")]
     [SerializeField] private float _maxScaleX = 5;
@@ -34,16 +35,16 @@ public class Scaler : MonoBehaviour
 
         _scale = new Vector3(_minScaleX, _minScaleY, _minScaleZ);
         _newScale = new Vector3(_maxScaleX, _maxScaleY, _maxScaleZ);
-        _time = _timeScale;
+        _time = _timeBetweenScale;
     }
     void Update()
     {
         _time -= Time.deltaTime;
-        transform.localScale = Vector3.Lerp(transform.localScale, _newScale, Time.deltaTime);
+        transform.localScale = Vector3.Lerp(transform.localScale, _newScale, Time.deltaTime * _speedScale);
         if (_time <= 0)
         {
             (_scale, _newScale) = (_newScale, _scale);
-            _time = _timeScale;
+            _time = _timeBetweenScale;
         }
     }
 }
