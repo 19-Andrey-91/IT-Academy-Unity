@@ -9,6 +9,11 @@ public class ObjectCreator : MonoBehaviour
     private GameObject instance;
     private GameObject prefab;
 
+    private void OnGUI()
+    {
+        GUI.Label(new Rect(20, 20, 400, 50), "Press SPACEBAR to continue");
+    }
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
