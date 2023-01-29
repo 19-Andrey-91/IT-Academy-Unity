@@ -118,8 +118,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 614556596dd37cb4e9b4c4cd7444df45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _bottomEdge: -5
-  _upperEdge: 5
-  _leftEdge: -5
-  _rightEdge: 5
+  _horizontalEdges: {x: -5, y: 5}
+  _verticalEdges: {x: -5, y: 5}
   _speed: 10
