@@ -48,11 +48,11 @@ public class RobotView : MonoBehaviour
 
             Vector3 cameraPosition = new Vector3(roboCamera.position.x, roboCamera.position.y);
             Vector3 nextCameraPosition = new Vector3(mouseY, roboCamera.position.y);
-            roboCamera.localRotation = Quaternion.Euler(Vector3.Lerp(cameraPosition, nextCameraPosition, 0.2f));
+            roboCamera.localRotation = Quaternion.Euler(Vector3.Lerp(cameraPosition, nextCameraPosition, 0.1f));
 
             Vector3 robotPosition = new Vector3(transform.position.x, transform.position.y);
             Vector3 nextRobotPosition = new Vector3(transform.position.x, mouseX);
-            transform.localRotation = Quaternion.Euler(Vector3.Lerp(robotPosition, nextRobotPosition, 0.2f));
+            transform.localRotation = Quaternion.Euler(Vector3.Lerp(robotPosition, nextRobotPosition, 0.1f));
         }
     }
 }
