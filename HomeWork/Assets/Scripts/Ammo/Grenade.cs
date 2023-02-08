@@ -10,22 +10,28 @@ public class Grenade : Ammo
     {
         base.Fly(newObject);
     }
-    private void OnTriggerEnter(Collider other)
+    private void OnCollisionEnter(Collision collision)
     {
         Explode();
-        Destroy(gameObject);
+        Destroy(GameObject.Find("Grenade(Clone)"));
     }
-
     private void Explode()
     {
-        Collider[] colliders = Physics.OverlapSphere(rb.transform.position, radius);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
         foreach (Collider collider in colliders)
         {
             Rigidbody rigidbody = collider.attachedRigidbody;
             if (rigidbody)
             {
-                rigidbody.AddExplosionForce(forceExplosion, rb.transform.position, radius);
+                rigidbody.AddExplosionForce(forceExplosion, transform.position, radius);
             }
+        }
+    }
+    private void OnDrawGizmos()
+    {
+        if (rb != null)
+        {
+            Gizmos.DrawSphere(transform.position, radius);
         }
     }
 }
