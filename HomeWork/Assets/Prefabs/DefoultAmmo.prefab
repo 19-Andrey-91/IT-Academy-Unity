@@ -146,6 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa2754731e5b4484087dde28b2166ca5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  force: 300
+  force: {x: 0, y: 0, z: 100}
   lifeTime: 5
   number: 10

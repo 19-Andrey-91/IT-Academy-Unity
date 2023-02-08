@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Ammo : MonoBehaviour
 {
-    [SerializeField] internal float force = 10f;
+    [SerializeField] internal Vector3 force;
 
     [SerializeField] private float lifeTime = 10f;
 
@@ -18,7 +18,7 @@ public class Ammo : MonoBehaviour
     internal virtual void Fly(GameObject newObject) 
     {
         rb = newObject.GetComponent<Rigidbody>();
-        direction = Camera.main.transform.TransformDirection(new Vector3(0, 0, force));
+        direction = Camera.main.transform.TransformDirection(force);
         rb.AddForce(direction, ForceMode.Impulse);
     }
     private void Awake()
