@@ -18,7 +18,7 @@ public class Ammo : MonoBehaviour
     internal virtual void Fly(GameObject newObject) 
     {
         rb = newObject.GetComponent<Rigidbody>();
-        direction = Camera.main.transform.TransformDirection(new Vector3(1, 1, force));
+        direction = Camera.main.transform.TransformDirection(new Vector3(0, 0, force));
         rb.AddForce(direction, ForceMode.Impulse);
     }
     private void Awake()

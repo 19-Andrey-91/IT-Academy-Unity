@@ -27,11 +27,4 @@ public class Grenade : Ammo
             }
         }
     }
-    private void OnDrawGizmos()
-    {
-        if (rb != null)
-        {
-            Gizmos.DrawSphere(transform.position, radius);
-        }
-    }
 }

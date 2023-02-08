@@ -45,7 +45,7 @@ public class Weapon : MonoBehaviour, IFire
         {
             if (ammoInMagazine > 0)
             {
-                GameObject newObject = Instantiate(go, transform);
+                GameObject newObject = Instantiate(go, transform.position, transform.rotation);
                 ammo.Fly(newObject);
                 ammoInMagazine--;
                 textNumberAmmo(ammoInMagazine);
