@@ -6,10 +6,7 @@ public class Grenade : Ammo
 {
     [SerializeField] private float radius = 5f;
     [SerializeField] private float forceExplosion = 100f;
-    internal override void Fly(GameObject newObject)
-    {
-        base.Fly(newObject);
-    }
+
     private void OnCollisionEnter(Collision collision)
     {
         Explode();

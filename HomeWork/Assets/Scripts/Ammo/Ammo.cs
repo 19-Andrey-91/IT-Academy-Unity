@@ -15,7 +15,7 @@ public class Ammo : MonoBehaviour
 
     public int Number { get => number; private set => number = value; }
 
-    internal virtual void Fly(GameObject newObject) 
+    internal void Fly(GameObject newObject) 
     {
         rb = newObject.GetComponent<Rigidbody>();
         direction = Camera.main.transform.TransformDirection(force);
