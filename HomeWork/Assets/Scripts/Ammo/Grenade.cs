@@ -13,7 +13,7 @@ public class Grenade : Ammo
     private void OnCollisionEnter(Collision collision)
     {
         Explode();
-        Destroy(GameObject.Find("Grenade(Clone)"));
+        Destroy(gameObject);
     }
     private void Explode()
     {
