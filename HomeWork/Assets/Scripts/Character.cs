@@ -107,8 +107,8 @@ public class Character : MonoBehaviour
 
     private void StopMove(InputAction.CallbackContext obj)
     {
-        moveDirection.x = 0;
-        moveDirection.z = 0;
+        stickDirection.x = 0;
+        stickDirection.y = 0;
     }
 
     private void View(InputAction.CallbackContext obj)
