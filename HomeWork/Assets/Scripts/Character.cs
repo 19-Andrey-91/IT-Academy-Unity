@@ -77,9 +77,9 @@ public class Character : MonoBehaviour
         {
             speedY += gravity * Time.deltaTime;
         }
-        else if(speedY < 0.0f)
+        else if(speedY < -0.1f)
         {
-            speedY = 0.0f;
+            speedY = -0.1f;
         }
         Debug.Log(speedY);
         Debug.Log(Controller.isGrounded);
