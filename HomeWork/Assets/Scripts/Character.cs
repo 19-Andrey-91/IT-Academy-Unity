@@ -10,9 +10,9 @@ using UnityEngine.InputSystem;
 public class Character : MonoBehaviour
 {
     [SerializeField] private float gravity = -9.81f;
-    [SerializeField] private float jumpSpeed = 7;
-    [SerializeField] private float movementSpeed = 1.0f;
-    [SerializeField] private float sprintSpeed = 4.0f;
+    [SerializeField] private float jumpSpeed = 17;
+    [SerializeField] private float movementSpeed = 2.0f;
+    [SerializeField] private float sprintSpeed = 5.0f;
     [SerializeField] private float rotationSpeed = 0.2f;
     [SerializeField] private float animationBlendSpeed = 0.2f;
 
@@ -49,6 +49,7 @@ public class Character : MonoBehaviour
     private void Start()
     {
         currentSpeed = movementSpeed;
+        speedY = gravity;
     }
 
     private void OnEnable()
@@ -77,9 +78,9 @@ public class Character : MonoBehaviour
         {
             speedY += gravity * Time.deltaTime;
         }
-        else if (speedY < 0)
+        else
         {
-            speedY = 0;
+            speedY = gravity;
         }
         Debug.Log(speedY);
         Debug.Log(Controller.isGrounded);
@@ -154,5 +155,4 @@ public class Character : MonoBehaviour
             speedY += jumpSpeed;
         }
     }
-
 }
