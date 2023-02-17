@@ -260,7 +260,7 @@ public class Character : MonoBehaviour
 
     public void IsDead()
     {
-        textWhenDied.text = "You DIE ... \n" +
+        textWhenDied.text = "You DIED ... \n" +
             "Press ENTER to respawn";
         isDead = true;
     }
