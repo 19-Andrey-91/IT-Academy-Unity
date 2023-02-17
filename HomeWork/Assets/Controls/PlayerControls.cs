@@ -53,6 +53,33 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OnControl"",
+                    ""type"": ""Button"",
+                    ""id"": ""f44e180a-ffdb-41a5-a46e-2dc8ed072a86"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Death"",
+                    ""type"": ""Button"",
+                    ""id"": ""165e3f85-afad-43bc-a1d7-af9f825c990c"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Hit"",
+                    ""type"": ""Button"",
+                    ""id"": ""35056069-d04c-4dca-8f0e-ccda2a54ff7d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -143,6 +170,39 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7dfcd9c4-c701-49a0-81d8-b9c72221b2bd"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OnControl"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2b705f2f-f1b3-4f1e-a59d-d2655ac33ca5"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Death"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""86f89fa1-a11a-4130-bdd8-dfa8db6a63e1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Hit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -154,6 +214,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
+        m_Player_OnControl = m_Player.FindAction("OnControl", throwIfNotFound: true);
+        m_Player_Death = m_Player.FindAction("Death", throwIfNotFound: true);
+        m_Player_Hit = m_Player.FindAction("Hit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -216,6 +279,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Jump;
+    private readonly InputAction m_Player_OnControl;
+    private readonly InputAction m_Player_Death;
+    private readonly InputAction m_Player_Hit;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -223,6 +289,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Player_Move;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
+        public InputAction @OnControl => m_Wrapper.m_Player_OnControl;
+        public InputAction @Death => m_Wrapper.m_Player_Death;
+        public InputAction @Hit => m_Wrapper.m_Player_Hit;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -241,6 +310,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
+                @OnControl.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnControl;
+                @OnControl.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnControl;
+                @OnControl.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnOnControl;
+                @Death.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeath;
+                @Death.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeath;
+                @Death.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnDeath;
+                @Hit.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHit;
+                @Hit.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHit;
+                @Hit.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnHit;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -254,6 +332,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @OnControl.started += instance.OnOnControl;
+                @OnControl.performed += instance.OnOnControl;
+                @OnControl.canceled += instance.OnOnControl;
+                @Death.started += instance.OnDeath;
+                @Death.performed += instance.OnDeath;
+                @Death.canceled += instance.OnDeath;
+                @Hit.started += instance.OnHit;
+                @Hit.performed += instance.OnHit;
+                @Hit.canceled += instance.OnHit;
             }
         }
     }
@@ -263,5 +350,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnOnControl(InputAction.CallbackContext context);
+        void OnDeath(InputAction.CallbackContext context);
+        void OnHit(InputAction.CallbackContext context);
     }
 }

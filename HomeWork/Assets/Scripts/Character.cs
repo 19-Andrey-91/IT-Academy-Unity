@@ -1,8 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using UnityEditor;
+
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -15,20 +12,27 @@ public class Character : MonoBehaviour
     [SerializeField] private float sprintSpeed = 5.0f;
     [SerializeField] private float rotationSpeed = 0.2f;
     [SerializeField] private float animationBlendSpeed = 0.2f;
+    [SerializeField] private TextMeshProUGUI textWhenDied;
 
     private InputAction move;
     private InputAction sprint;
     private InputAction jump;
+    private InputAction onControl;
+    private InputAction death;
+    private InputAction hit;
     private CharacterController controller;
     private Camera characterCamera;
     private Animator animator;
     private PlayerControls playerControls;
     private float rotationAngle = 0.0f;
     private float targetAnimationSpeed = 0.0f;
-    private float currentSpeed;
+    private float currentSpeed = 0f;
 
     private bool isJumping = false;
     private float speedY = 0.0f;
+
+    private bool isDead = false;
+    private bool isHit = false;
 
     private Vector3 movement = Vector3.zero;
     private Vector3 rotatedMovement = Vector3.zero;
@@ -44,25 +48,24 @@ public class Character : MonoBehaviour
         move = playerControls.Player.Move;
         sprint = playerControls.Player.Sprint;
         jump = playerControls.Player.Jump;
-    }
-
-    private void Start()
-    {
-        currentSpeed = movementSpeed;
+        onControl = playerControls.Player.OnControl;
+        death = playerControls.Player.Death;
+        hit = playerControls.Player.Hit;
     }
 
     private void OnEnable()
     {
         playerControls.Enable();
-        jump.started += Jump;
-        move.performed += Move;
-        move.canceled += StopMove;
-        sprint.performed += Sprint;
-        sprint.canceled += OffSprint;
+        death.performed += PressTab;
+        onControl.performed += PressEnter;
+
     }
 
     private void OnDisable()
     {
+        hit.performed -= Hit;
+        death.performed -= PressTab;
+        onControl.performed -= PressEnter;
         jump.started -= Jump;
         sprint.canceled -= OffSprint;
         sprint.performed -= Sprint;
@@ -77,12 +80,11 @@ public class Character : MonoBehaviour
         {
             speedY += gravity * Time.deltaTime;
         }
-        else if(speedY < -0.1f)
+        else if (speedY < -0.1f)
         {
             speedY = -0.1f;
         }
-        Debug.Log(speedY);
-        Debug.Log(Controller.isGrounded);
+
         CharacterAnimator.SetFloat("SpeedY", speedY / jumpSpeed);
         if (isJumping && speedY < 0)
         {
@@ -94,6 +96,8 @@ public class Character : MonoBehaviour
             }
         }
 
+        targetAnimationSpeed = SpeedForAnimation();
+
         Vector3 verticalMovement = Vector3.up * speedY;
         rotatedMovement = Quaternion.Euler(0.0f, CharacterCamera.transform.rotation.eulerAngles.y, 0.0f) * movement;
 
@@ -102,7 +106,6 @@ public class Character : MonoBehaviour
         {
             rotationAngle = Mathf.Atan2(rotatedMovement.x, rotatedMovement.z) * Mathf.Rad2Deg;
         }
-
         CharacterAnimator.SetFloat("Speed", Mathf.Lerp(CharacterAnimator.GetFloat("Speed"), targetAnimationSpeed, animationBlendSpeed));
         Quaternion currentRotation = Controller.transform.rotation;
         Quaternion targetRotation = Quaternion.Euler(0.0f, rotationAngle, 0.0f);
@@ -114,13 +117,13 @@ public class Character : MonoBehaviour
         Vector2 moveDirection = obj.ReadValue<Vector2>();
         movement.x = moveDirection.x;
         movement.z = moveDirection.y;
-        targetAnimationSpeed = 0.5f;
+        currentSpeed = sprint.inProgress ? sprintSpeed : movementSpeed;
     }
 
     private void StopMove(InputAction.CallbackContext obj)
     {
         movement = Vector3.zero;
-        targetAnimationSpeed = 0.0f;
+        currentSpeed = 0.0f;
     }
 
     private void Sprint(InputAction.CallbackContext obj)
@@ -128,7 +131,6 @@ public class Character : MonoBehaviour
         if (move.inProgress)
         {
             currentSpeed = sprintSpeed;
-            targetAnimationSpeed = 1.0f;
         }
     }
 
@@ -137,11 +139,10 @@ public class Character : MonoBehaviour
         if (move.inProgress)
         {
             currentSpeed = movementSpeed;
-            targetAnimationSpeed = 0.5f;
         }
         else
         {
-            targetAnimationSpeed = 0.0f;
+            currentSpeed = 0.0f;
         }
     }
 
@@ -153,5 +154,114 @@ public class Character : MonoBehaviour
             CharacterAnimator.SetTrigger("Jump");
             speedY += jumpSpeed;
         }
+    }
+
+    private float SpeedForAnimation()
+    {
+        if (currentSpeed > movementSpeed)
+        {
+            return 1f;
+        }
+        else if (currentSpeed == movementSpeed)
+        {
+            return 0.5f;
+        }
+        else
+        {
+            return 0f;
+        }
+    }
+
+    private void SubscribeToButtons()
+    {
+        hit.performed += Hit;
+        jump.started += Jump;
+        move.performed += Move;
+        move.canceled += StopMove;
+        sprint.performed += Sprint;
+        sprint.canceled += OffSprint;
+    }
+
+    private void UnsubscribeToButtons()
+    {
+        hit.performed -= Hit;
+        jump.started -= Jump;
+        sprint.canceled -= OffSprint;
+        sprint.performed -= Sprint;
+        move.performed -= Move;
+        move.canceled -= StopMove;
+
+    }
+
+    private void PressEnter(InputAction.CallbackContext obj)
+    {
+        if (isDead)
+        {
+            CharacterAnimator.SetBool("Spawn", true);
+            isDead = false;
+            textWhenDied.text = "";
+        }
+    }
+
+    private void PressTab(InputAction.CallbackContext obj)
+    {
+        if (!isDead)
+        {
+            movement = Vector3.zero;
+            currentSpeed = 0f;
+            CharacterAnimator.SetTrigger("IsDead");
+            CharacterAnimator.SetBool("Spawn", false);
+            isDead = true;
+            UnsubscribeToButtons();
+        }
+    }
+
+    private void Hit(InputAction.CallbackContext obj)
+    {
+        if (!isHit)
+        {
+            CharacterAnimator.SetInteger("NumHit", Random.Range(0, 3));
+            CharacterAnimator.SetTrigger("Hit");
+        }
+    }
+
+    private bool? ConvertIntToBool(int value)
+    {
+        if (value == 0)
+        {
+            return false;
+        }
+        else if (value == 1)
+        {
+            return true;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public void IsSpawn(int num)
+    {
+        if (num == 1)
+        {
+            UnsubscribeToButtons();
+        }
+        else if (num == 0)
+        {
+            SubscribeToButtons();
+        }
+    }
+
+    public void IsHit(int isHit)
+    {
+        this.isHit = ConvertIntToBool(isHit) ?? false;
+    }
+
+    public void IsDead()
+    {
+        textWhenDied.text = "You DIE ... \n" +
+            "Press ENTER to respawn";
+        isDead = true;
     }
 }
