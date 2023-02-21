@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-public class TeleportUP : Teleport, IOnCollider
+public class TeleportUP : Teleport
 {
     private void OnTriggerEnter(Collider other)
     {

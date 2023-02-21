@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Teleport : MonoBehaviour
+public class Teleport : MonoBehaviour, IOnCollider
 {
     public event Action OnCollider;
 
