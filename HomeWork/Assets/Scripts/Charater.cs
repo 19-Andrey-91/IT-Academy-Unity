@@ -1,11 +1,14 @@
 
-using TMPro;
+using Cinemachine;
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class Character : MonoBehaviour
 {
+    public event Action<bool> OnWalks;
+
     [SerializeField] private float gravity = -9.81f;
     [SerializeField] private float movementSpeed = 2.0f;
 
@@ -25,7 +28,8 @@ public class Character : MonoBehaviour
     private void Awake()
     {
         playerControls = new PlayerControls();
-        move = playerControls.Player.Move;
+        move = playerControls.Character.Move;
+
     }
 
     private void OnEnable()
@@ -33,11 +37,12 @@ public class Character : MonoBehaviour
         playerControls.Enable();
         move.performed += Move;
         move.canceled += StopMove;
-        playerControls.Player.Look.performed += Look;
+        move.started += StartMove;
     }
 
     private void OnDisable()
     {
+        move.started -= StartMove;
         move.performed -= Move;
         move.canceled -= StopMove;
         playerControls.Disable();
@@ -52,11 +57,16 @@ public class Character : MonoBehaviour
     {
         cameraRotationY = Quaternion.Euler(0.0f, CharacterCamera.transform.rotation.eulerAngles.y, 0.0f);
         rotatedMovement = cameraRotationY * movement;
-
-        Controller.Move((verticalMovement + rotatedMovement) * movementSpeed * Time.deltaTime);
         transform.rotation = cameraRotationY;
 
+        Controller.Move((verticalMovement + rotatedMovement) * movementSpeed * Time.deltaTime);
     }
+
+    private void StartMove(InputAction.CallbackContext obj)
+    {
+        OnWalks?.Invoke(true);
+    }
+
 
     private void Move(InputAction.CallbackContext direction)
     {
@@ -68,11 +78,6 @@ public class Character : MonoBehaviour
     private void StopMove(InputAction.CallbackContext obj)
     {
         movement = Vector3.zero;
-    }
-
-    private void Look(InputAction.CallbackContext obj)
-    {
-        Vector2 pos = obj.ReadValue<Vector2>();
-        CharacterCamera.transform.rotation = Quaternion.Euler(0.0f, pos.x, pos.y);
+        OnWalks?.Invoke(false);
     }
 }

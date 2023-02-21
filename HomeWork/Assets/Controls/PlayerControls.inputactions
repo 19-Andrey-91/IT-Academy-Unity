@@ -2,7 +2,7 @@
     "name": "PlayerControls",
     "maps": [
         {
-            "name": "Player",
+            "name": "Character",
             "id": "67a089b6-b1c2-47f0-a10d-dc8dcd6c5a16",
             "actions": [
                 {
@@ -93,8 +93,19 @@
                 },
                 {
                     "name": "",
-                    "id": "bec62721-c67c-4d6e-af31-406c74d9e96c",
-                    "path": "<Touchscreen>/delta",
+                    "id": "d608acba-6b31-426f-89c2-8516ad8f1775",
+                    "path": "<Mouse>/delta",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e8db2cad-073f-48c6-823a-75bade5e37f7",
+                    "path": "<Gamepad>/rightStick",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
