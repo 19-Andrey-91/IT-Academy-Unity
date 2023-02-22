@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   lighting: {fileID: 810536941}
-  minFlickerSpeed: 0.1
-  maxFlickerSpeed: 1
+  minFlickerSpeed: 1
+  maxFlickerSpeed: 2
 --- !u!1 &55447306
 GameObject:
   m_ObjectHideFlags: 0

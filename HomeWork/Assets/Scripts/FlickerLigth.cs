@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Collections.LowLevel.Unsafe;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class FlickerLigth : MonoBehaviour
@@ -11,7 +12,7 @@ public class FlickerLigth : MonoBehaviour
 
     public bool IsOn { get; set; } = true;
 
-    private void Update()
+    private void Start()
     {
         StartCoroutine(Flicker());
     }
