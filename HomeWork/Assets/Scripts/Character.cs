@@ -1,12 +1,12 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class Character : MonoBehaviour
 {
-    public event Action<Vector3> OnMoving;
+    public event Action<Vector3, float> OnMoving;
+
+    [SerializeField] private float speed = 1f;
 
     private PlayerController controller;
     private Animator animator;
@@ -52,7 +52,7 @@ public class Character : MonoBehaviour
 
     private void Update()
     {
-        OnMoving?.Invoke(directionMove);
+        OnMoving?.Invoke(directionMove, speed);
     }
 
     private void AnimationDirection(float direction)

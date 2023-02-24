@@ -1,5 +1,3 @@
-
-using System.Collections;
 using UnityEngine;
 
 
@@ -10,7 +8,7 @@ public class MoveGround : MonoBehaviour
 
     private Character character;
     private SpriteRenderer spriteRenderer;
-    private float displacementFactor = 1.5f;
+    private float displacementFactor = 3f;
     private Vector3 displacementVector = Vector3.zero;
 
     private bool createdGroundAround = false;
@@ -37,38 +35,38 @@ public class MoveGround : MonoBehaviour
     {
         if (!createdGroundAround)
         {
-            CreateNewGround(ToCreate.Left).CreatedGroundAround = true;
-            CreateNewGround(ToCreate.Right).CreatedGroundAround = true;
+            CreateNewGround(GroundsCreationSide.Left).CreatedGroundAround = true;
+            CreateNewGround(GroundsCreationSide.Right).CreatedGroundAround = true;
         }
-        displacementVector.x = spriteRenderer.bounds.size.x * displacementFactor * 2;
+        displacementVector.x = spriteRenderer.bounds.size.x * displacementFactor;
     }
     private void Update()
     {
-        if (transform.position.x > spriteRenderer.bounds.size.x * displacementFactor)
+        if (transform.position.x > displacementVector.x / 2)
         {
             transform.position -= displacementVector;
         }
-        if (transform.position.x < -spriteRenderer.bounds.size.x * displacementFactor)
+        if (transform.position.x < -displacementVector.x / 2)
         {
             transform.position += displacementVector;
         }
     }
 
-    private void Move(Vector3 directionMove)
+    private void Move(Vector3 directionMove, float overallSpeed)
     {
-        transform.position += -directionMove * moveSpeed * Time.deltaTime;
+        transform.position += -directionMove * moveSpeed * overallSpeed * Time.deltaTime;
     }
 
-    private MoveGround CreateNewGround(ToCreate direction)
+    private MoveGround CreateNewGround(GroundsCreationSide direction)
     {
         float newPositionX = 0;
 
         switch (direction)
         {
-            case ToCreate.Left:
+            case GroundsCreationSide.Left:
                 newPositionX = spriteRenderer.transform.position.x - spriteRenderer.bounds.size.x;
                 break;
-            case ToCreate.Right:
+            case GroundsCreationSide.Right:
                 newPositionX = spriteRenderer.transform.position.x + spriteRenderer.bounds.size.x;
                 break;
             default:
@@ -80,7 +78,7 @@ public class MoveGround : MonoBehaviour
         return newGround;
     }
 
-    private enum ToCreate
+    private enum GroundsCreationSide
     {
         Left,
         Right,
