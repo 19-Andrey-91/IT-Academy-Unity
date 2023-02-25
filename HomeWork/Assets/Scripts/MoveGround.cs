@@ -42,11 +42,11 @@ public class MoveGround : MonoBehaviour
     }
     private void Update()
     {
-        if (transform.position.x > displacementVector.x / 2)
+        if (transform.position.x > displacementVector.x * 0.5f)
         {
             transform.position -= displacementVector;
         }
-        if (transform.position.x < -displacementVector.x / 2)
+        if (transform.position.x < -displacementVector.x * 0.5f)
         {
             transform.position += displacementVector;
         }
