@@ -22,6 +22,15 @@ public class Character : MonoBehaviour
         rigidbodyCharacter = GetComponent<Rigidbody2D>();
     }
 
+    private void Start()
+    {
+        if (CinemachineCore.Instance.VirtualCameraCount > 0)
+        {
+            CinemachineCore.Instance.GetVirtualCamera(0).Follow = transform;
+        }
+        else throw new UnityException("CinemachineVirtualCamera is not found");
+    }
+
     private void OnEnable()
     {
         inputController.Enable();
@@ -36,15 +45,6 @@ public class Character : MonoBehaviour
         inputController.Controls.Move.performed -= Move;
         inputController.Controls.Jump.started -= Jump;
         inputController.Disable();
-    }
-
-    private void Start()
-    {
-        if (CinemachineCore.Instance.VirtualCameraCount > 0)
-        {
-            CinemachineCore.Instance.GetVirtualCamera(0).Follow = transform;
-        }
-        else throw new UnityException("CinemachineVirtualCamera is not found");
     }
 
     void FixedUpdate()

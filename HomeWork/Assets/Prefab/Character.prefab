@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8072912798693785329}
   - component: {fileID: 8072912798693785340}
   - component: {fileID: 8072912798693785335}
-  - component: {fileID: 8072912798693785331}
+  - component: {fileID: 4452013515195345476}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -34,7 +34,7 @@ Transform:
   m_Children:
   - {fileID: 8072912800222826513}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &8072912798693785329
 SpriteRenderer:
@@ -150,7 +150,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 1
   m_Constraints: 4
---- !u!114 &8072912798693785331
+--- !u!114 &4452013515195345476
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
