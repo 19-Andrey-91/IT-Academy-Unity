@@ -1,0 +1,34 @@
+{
+    "name": "SubjectControls",
+    "maps": [
+        {
+            "name": "Subject",
+            "id": "8dd9e2c8-9f44-4163-9fb7-c700731463f1",
+            "actions": [
+                {
+                    "name": "Keyboard",
+                    "type": "Button",
+                    "id": "4bf9d622-b5dd-467b-ab81-7ac4235ade2f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "364e2eda-368f-413f-94db-7bdde7618625",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Keyboard",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
